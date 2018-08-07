@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<title>Lista de Usuários</title>
+</h:head>
+<h:body>
+	<h1>Lista de Usuários</h1>
+	<hr/>
+	<h:form>
+		<h:dataTable value="#{usuarioRN.listaUsuario}" var="dados">
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="IdUsuario"/>
+				</f:facet>
+				<h:outputText value="#{dados.idUsuario}"/>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Nome"/>
+				</f:facet>
+				<h:outputText value="#{dados.nome}"/>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="E-mail"/>
+				</f:facet>
+				<h:outputText value="#{dados.email}"/>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Senha"/>
+				</f:facet>
+				<h:outputText value="#{dados.senha}"/>
+			</h:column>
+						<h:column>
+				<f:facet name="header">
+					<h:outputText value="Ações"/>
+				</f:facet>
+				<h:commandButton value="[Editar]" action="alterar" actionListener="#{usuarioRN.selecionarUsuario}"/>
+				<h:commandButton value="[Excluir]" action="#{usuarioRN.excluir}" actionListener="#{usuarioRN.selecionarUsuario}"/>
+			</h:column>
+		</h:dataTable>
+		<h:commandLink value="Novo Usuario" action="#{usuarioRN.novo}"/>&nbsp;|&nbsp;
+		<h:commandLink value="Novo Usuario" action="#{usuarioRN.novo}"/>
+	</h:form>
+</h:body>
+</html>

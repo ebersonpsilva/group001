@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<title>Alterar de Usuários</title>
+</h:head>
+<h:body>
+	<h1>Alterar de Usuários</h1>
+	<hr/>
+	<h:form>
+		<h:panelGrid columns="2">
+			<h:outputLabel value="Nome:" for="nome"/>
+			<h:inputText id="nome" label="Nome" value="#{usuarioRN.usuario.nome}" required="true"/>
+			<h:outputLabel value="E-mail:" for="email"/>
+			<h:inputText id="email" label="E-mail" value="#{usuarioRN.usuario.email}"/>
+			<h:outputLabel value="Senha:" for="senha"/>
+			<h:inputSecret id="senha" label="Senha" value="#{usuarioRN.usuario.senha}" required="true"/>
+			<h:outputLabel value="Confirma Senha:" for="confsenha"/>
+			<h:inputSecret id="confSenha" label="Confirma Senha" value="#{usuarioRN.usuario.confSenha}" required="true"/>
+			<h:outputText />
+			<h:commandButton action="#{usuarioRN.alterar}" value="Atualizar" type="submit"/>
+			<h:commandButton value="Limpar" type="reset"/>
+		</h:panelGrid>
+	</h:form>
+	<hr />
+</h:body>
+</html>
