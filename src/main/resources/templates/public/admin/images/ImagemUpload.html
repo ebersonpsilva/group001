@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Imagem Upload</title>
+</head>
+<body>
+	<h1>Imagem Upload</h1>
+	
+	<!-- <form:form method="POST" action="/salvarJpg" enctype="multipart/form-data"> -->
+	<form method="POST" th:action="@{/salvarJpg}" enctype="multipart/form-data">
+	    <table>
+	        <tr>
+	            <td>
+	            	<label path="file">Selecione a imagem para upload</label>
+	            </td>
+	            <td>
+	            	<input type="file" name="file" accept=".jpg"/>
+	            </td>
+	        </tr>
+	        <tr>
+	            <td>
+	            	<input type="submit" value="Submit" />
+	            </td>
+	        </tr>
+	    </table>
+	</form>
+
+</body>
+</html>
