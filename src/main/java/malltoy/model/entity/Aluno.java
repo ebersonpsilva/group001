@@ -10,7 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name="Aluno")
@@ -26,6 +28,7 @@ public class Aluno {
 	
 	@NotBlank(message="O e-mail é obrigatório!")
 	@Column(length=100,nullable=false)
+	@Email
 	private String usEmail;
 	
 	@Column(length=1, columnDefinition="int default 1", insertable=false)
@@ -37,6 +40,7 @@ public class Aluno {
 	
 	@NotBlank(message="O RGM é obrigatório!")
 	@Column(length=10,nullable=false,unique=true)
+	@Size(min=4,max=10,message="O RGM deve conter números de {min} a {max}!")
 	private String usRgm;
 	
 	@Column(length=250,nullable=true)

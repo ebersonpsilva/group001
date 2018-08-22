@@ -51,7 +51,7 @@
 								</div>
 								<button type="button" class="close" data-dismiss="alert">&times;</button>
 							</div>
-										
+													
 							<input type="hidden" th:field="*{usCodigo}"/> 
 							<input type="hidden" th:field="${aluno.usHref}"/>
 						<table class="table table-bordered">
@@ -59,7 +59,7 @@
 							<tr th:if="${aluno.usCodigo != null} ">
 						      <th>Status: </th>
 						      <td>
-								<select class="form-control" name="usStatus">
+								<select class="form-control" name="usStatus" id="usStatus">
 									<option value="">---Selecione o Status---</option>
 									<option th:value="0" th:text="Inativo" th:selected="${aluno.usCodigo != null && aluno.usStatus == 0}"></option>
 									<option value="1" th:text="Ativo" th:selected="${aluno.usStatus == 1}"></option>
@@ -68,19 +68,19 @@
 						    </tr>
 						    <tr>
 						      <th>Nome: </th>
-						      <td><input type="text" th:field="*{usNome}" class="form-control"/></td>
+						      <td><input type="text" th:field="*{usNome}" id="usNome" class="form-control"/></td>
 						    </tr>
 						    <tr>
 						      <th>E-mail: </th>
-						      <td><input type="email" th:field="*{usEmail}" class="form-control"/></td>
+						      <td><input type="email" th:field="*{usEmail}" id="usEmail" class="form-control"/></td>
 						    </tr>
 						    <tr>
 						      <th>RGM: </th>
-						      <td><input type="number" th:field="*{usRgm}" class="form-control"/></td>
+						      <td><input type="number" th:field="*{usRgm}" id="usRgm" class="form-control"/></td>
 						    </tr>
 						    <tr>
 						      <th>Foto: </th>
-						      <td><input type="file" name="foto" accept="image/*" class="form-control"/></td>
+						      <td><input type="file" name="foto" accept="image/*" id="foto" class="form-control"/></td>
 						    </tr>
 						    <tr>
 						    	<td>&nbsp;</td>

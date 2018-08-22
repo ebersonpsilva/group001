@@ -52,18 +52,18 @@ public class AlunoController {
 	}
 	
 	@PostMapping("/salvar")
-	public String salvarCadastro(@Valid Aluno aluno, @RequestParam("foto") MultipartFile file,BindingResult rs, RedirectAttributes attr) {
+	public String salvarCadastro(@Valid Aluno aluno, BindingResult bs, @RequestParam("foto") MultipartFile file,RedirectAttributes attr) {
 		
-		if(rs.hasErrors()) return "/alunos/cadastro";
-		
-		System.out.println(DIRBASE+DIRRES+IMGALUNOS+SEP);
-		System.out.println(file.getOriginalFilename());
+		if(bs.hasErrors()) {
+			return "/public/admin/alunos/cadastro";
+		}
 		
 		if(salveImg(file)) {
 			aluno.setUsHref(DIRBASE+DIRRES+IMGALUNOS+SEP+file.getOriginalFilename());
-			alunoDao.salvar(aluno);
-			attr.addFlashAttribute("message", "Aluno cadastrado com sucesso!");
 		}
+		
+		alunoDao.salvar(aluno);
+		attr.addFlashAttribute("message", "Aluno cadastrado com sucesso!");
 		
 		return "redirect:/alunos/cadastro";
 	}
@@ -77,9 +77,11 @@ public class AlunoController {
 	}
 	
 	@PostMapping("editar")
-	public String salvarEdicao(@Valid Aluno aluno, @RequestParam("usHref") String usHref, @RequestParam("foto") MultipartFile file,BindingResult rs, RedirectAttributes attr) {
+	public String salvarEdicao(@Valid Aluno aluno, BindingResult bs, @RequestParam("usHref") String usHref, @RequestParam("foto") MultipartFile file, RedirectAttributes attr) {
 		
-		if(rs.hasErrors()) return "/public/admin/alunos/cadastro";
+		if(bs.hasErrors()) {
+			return "/public/admin/alunos/cadastro";
+		}
 
 		if(!file.isEmpty()) {
 			removeImg(aluno.getUsHref());
@@ -97,9 +99,8 @@ public class AlunoController {
 	@GetMapping("/excluir/{codigo}")
 	public String excluir(@PathVariable("codigo") Long codigo) {
 		Aluno aluno = alunoDao.buscarPorId(codigo);
-		if(removeImg(aluno.getUsHref())) {
-			alunoDao.delete(codigo);			
-		}
+		removeImg(aluno.getUsHref());
+		alunoDao.delete(codigo);			
 		return "redirect:/alunos/lista";
 	}
 	
