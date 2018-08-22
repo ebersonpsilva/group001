@@ -1,10 +1,59 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>:::MALL TOY | Página de administração:::</title>
+<title>:::MALL TOY | P&aacute;gina Inicial:::</title>
+<link th:href="@{/webjars/bootstrap/css/bootstrap.css}" rel="stylesheet" />
+<link th:href="@{/webjars/bootstrap/css/bootstrap-theme.css}"
+	rel="stylesheet" />
 </head>
 <body>
+	<header class="bg-primary text-white">
+		<div class="container text-center">
+			<h1>Menu administrativo</h1>
+		</div>
+	</header>
+	<div class="container">
 
+		<div class="row">
+
+			<div class="col-lg-3">
+				<h1 class="my-4">Menu Principal</h1>
+				<div class="list-group">
+					<!-- <a href="#" class="list-group-item active">Alunos</a> -->
+					<a th:href="@{/alunos/lista}" class="list-group-item">Alunos</a>
+					<a th:href="@{/categorias/categoriaLista}"	class="list-group-item">Categoria</a>
+					<a th:href="@{/produtos/lista}" class="list-group-item">Produto</a>
+				</div>
+			</div>
+			<!-- /.col-lg-3 -->
+
+			<div class="col-lg-9">
+
+				<div class="card mt-4">
+					<!-- <img class="card-img-top img-fluid" src="http://placehold.it/900x400" alt=""> -->
+					<div class="card-body">
+						<h3 class="card-title">Sessão Administrativa</h3>
+						<p class="card-text">Nesta sessão você irá administrar todos
+							os dados de sua loja, inserir produtos, cadastrar usuarios, etc.</p>
+					</div>
+				</div>
+				<!-- <a href="#" class="btn btn-success">Leave a Review</a> -->
+			</div>
+		</div>
+		<!-- /.card -->
+
+	</div>
+	<!-- /.col-lg-9 -->
+
+	</div>
+
+	</div>
+
+
+
+	<script th:src="@{/webjars/jquery/jquery.js}"></script>
+	<script th:src="@{/webjars/bootstrap/js/bootstrap.js}"></script>
 </body>
 </html>

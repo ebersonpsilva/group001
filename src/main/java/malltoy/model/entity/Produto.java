@@ -1,6 +1,6 @@
 package malltoy.model.entity;
 
-import java.security.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 
 @Entity
@@ -26,10 +28,13 @@ public class Produto {
 	
 	private String prDescricao;
 	
-	private Timestamp prDtCadastro;	
+	@Column(columnDefinition="timestamp default CURRENT_TIMESTAMP()",insertable=false,updatable=false) 	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date prDtCadastro;	
 	
 	private double prValor;
 	
+	@Column(length=1, columnDefinition="int default 1", insertable=false)
 	private boolean prSatus;
 	
 	@ManyToOne
@@ -61,11 +66,11 @@ public class Produto {
 		this.prDescricao = prDescricao;
 	}
 
-	public Timestamp getPrDtCadastro() {
+	public Date getPrDtCadastro() {
 		return prDtCadastro;
 	}
 
-	public void setPrDtCadastro(Timestamp prDtCadastro) {
+	public void setPrDtCadastro(Date prDtCadastro) {
 		this.prDtCadastro = prDtCadastro;
 	}
 
@@ -91,6 +96,5 @@ public class Produto {
 
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
-	}	
-	
+	}
 }

@@ -56,6 +56,9 @@ public class AlunoController {
 		
 		if(rs.hasErrors()) return "/alunos/cadastro";
 		
+		System.out.println(DIRBASE+DIRRES+IMGALUNOS+SEP);
+		System.out.println(file.getOriginalFilename());
+		
 		if(salveImg(file)) {
 			aluno.setUsHref(DIRBASE+DIRRES+IMGALUNOS+SEP+file.getOriginalFilename());
 			alunoDao.salvar(aluno);
@@ -80,13 +83,14 @@ public class AlunoController {
 
 		if(!file.isEmpty()) {
 			removeImg(aluno.getUsHref());
+			if(salveImg(file)) {
+				aluno.setUsHref(DIRBASE+DIRRES+IMGALUNOS+SEP+file.getOriginalFilename());
+			}
 		}
-
-		if(salveImg(file)) {
-			aluno.setUsHref(DIRBASE+DIRRES+IMGALUNOS+SEP+file.getOriginalFilename());
-			alunoDao.atualizar(aluno);
-			attr.addFlashAttribute("message","Aluno atualizado com sucesso!");
-		}
+		
+		alunoDao.atualizar(aluno);
+		attr.addFlashAttribute("message","Aluno atualizado com sucesso!");
+		
 		return "redirect:/alunos/lista";
 	}
 	

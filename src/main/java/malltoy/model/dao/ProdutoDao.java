@@ -33,6 +33,6 @@ public class ProdutoDao {
 	}
 	
 	public List<Produto> buscarTodos(){
-		return entityManager.createQuery("select a from Produto a", Produto.class).getResultList();
+		return entityManager.createQuery("select p from Produto p", Produto.class).getResultList();
 	}
 }

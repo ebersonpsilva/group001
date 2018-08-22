@@ -1,4 +1,4 @@
-package malltoy.conversor;
+package malltoy.controller;
 
 import java.util.List;
 
@@ -14,59 +14,52 @@ import malltoy.model.dao.ProdutoDao;
 import malltoy.model.entity.Produto;
 
 @Controller
-@RequestMapping("/produto")
+@RequestMapping("/produtos")
 public class ProdutoController {
 
 	@Autowired
 	private ProdutoDao dao;
 	
-	@GetMapping("/produtoLista")
+	@GetMapping("/lista")
 	public String listar(ModelMap model) {
-		List<Produto> produto = dao.buscarTodos(); //obtendo lista de cursos
+		List<Produto> produto = dao.buscarTodos();
+		model.addAttribute("produtos",produto);
 		
-		//passando lista com o atributo para a view
-		model.addAttribute("produto",produto);
-		
-		return "/produto/produtoLista";
+		return "/produtos/lista";
 	}
 	
-	@GetMapping("/produtoCad")
+	@GetMapping("/cadastro")
 	public String preCadastrar(Produto produto) {
-		return "produto/produtoCad";
+		return "produtos/cadastro";
 	}
 	
 	@PostMapping("/salvar")
 	public String salvarCadastro(Produto produto) {
 		
 		dao.salvar(produto);
-		return "redirect:/produto/produtoCad"; //usando redirect, o metodo chamará uma nova view, se não usar, ela virá preenchida
+		return "redirect:/produtos/cadastro";
 	}
 	
-	@GetMapping("/editar/{prCodigo}")//esse {id} pega o id do objeto clicado na lista pelo botão 'editar'
-	public String preEditar(@PathVariable("prCodigo") Long prCodigo, ModelMap model) { //@PathVariable("id") esta indicando que o valor chamado 'id' vindo da view vai ser atribuido no Long id do parametro
-		//busca o curso pelo id
+	@GetMapping("/editar/{prCodigo}")
+	public String preEditar(@PathVariable("prCodigo") Long prCodigo, ModelMap model) {
 		Produto produto = dao.buscarPorId(prCodigo);
-		
-		//cria o atributo com objeto preenchido do curso, pra passar pra iew
 		model.addAttribute("produto", produto);
 		
-		return "/produto/produtoCad";
+		return "/produtos/cadastro";
 	}
 	
 	@PostMapping("editar")
 	public String salvarEdicao(Produto produto) {
-		
 		dao.atualizar(produto);
 		
-		return "redirect:/produto/produtoLista";
+		return "redirect:/produtos/lista";
 	}
 	
 	@GetMapping("/excluir/{prCodigo}")
 	public String excluir(@PathVariable("prCodigo") Long prCodigo) {
 		
 		dao.delete(prCodigo);
-		
-		return "redirect:/produto/produtoLista";
+		return "redirect:/produtos/produtoLista";
 	}
 	
 }

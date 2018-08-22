@@ -31,7 +31,7 @@ public class Aluno {
 	@Column(length=1, columnDefinition="int default 1", insertable=false)
 	private int usStatus;
 	
-	@Column(columnDefinition="timestamp default CURRENT_TIMESTAMP()")
+	@Column(columnDefinition="timestamp default CURRENT_TIMESTAMP()", insertable=false, updatable=false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date usDtCadastro;
 	
@@ -39,7 +39,7 @@ public class Aluno {
 	@Column(length=10,nullable=false,unique=true)
 	private String usRgm;
 	
-	@Column(length=150,nullable=true)
+	@Column(length=250,nullable=true)
 	private String usHref;
 	
 	

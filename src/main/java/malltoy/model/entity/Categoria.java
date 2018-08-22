@@ -1,14 +1,17 @@
 package malltoy.model.entity;
 
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 
 @Entity
@@ -18,12 +21,15 @@ public class Categoria {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long ctCodigo;
 	
-	@NotBlank
+	@NotBlank(message="O nome da categoria deve ser preenchido")
 	private String ctDescricao;
-
-	private Timestamp ctDtCadastro;
+	 
+	@Column(columnDefinition="timestamp default CURRENT_TIMESTAMP()", insertable=false, updatable=false) 	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date ctDtCadastro;
 		
-	private boolean ctSatus;
+	@Column(length=1, columnDefinition="int default 1", insertable=false)
+	private int ctStatus;
 	
 	@OneToMany(mappedBy="categoria") //mapeada para uma variavel chamada 'categoria' que esta na classe Produto
 	private List<Produto> produtos;
@@ -45,21 +51,14 @@ public class Categoria {
 		this.ctDescricao = ctDescricao;
 	}
 
-	public Timestamp getCtDtCadastro() {
+	public Date getCtDtCadastro() {
 		return ctDtCadastro;
 	}
 
-	public void setCtDtCadastro(Timestamp ctDtCadastro) {
+	public void setCtDtCadastro(Date ctDtCadastro) {
 		this.ctDtCadastro = ctDtCadastro;
 	}
-
-	public boolean isCtSatus() {
-		return ctSatus;
-	}
-
-	public void setCtSatus(boolean ctSatus) {
-		this.ctSatus = ctSatus;
-	}
+ 
 
 	public List<Produto> getProdutos() {
 		return produtos;
@@ -67,6 +66,17 @@ public class Categoria {
 
 	public void setProdutos(List<Produto> produtos) {
 		this.produtos = produtos;
-	}	
+	}
+
+	public int getCtStatus() {
+		return ctStatus;
+	}
+
+	public void setCtStatus(int ctStatus) {
+		this.ctStatus = ctStatus;
+	}
+
+	
+	 
 	
 }
