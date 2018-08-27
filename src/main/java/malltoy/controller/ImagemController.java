@@ -37,45 +37,52 @@ public class ImagemController {
 	
 	private static final String DIRBASE				= System.getProperty("user.dir");
 	private static final String DIRRES				= SEP+"src"+SEP+"main"+SEP+"resources"+SEP+"static"; 
-	private static final String IMGALUNOS			= SEP+"images"+SEP+"alunos";
+	private static final String IMGPRODUTOS			= SEP+"images"+SEP+"produtos";
 
 	@Autowired
 	private ImagemDao dao;
 	
 	@Autowired
 	private ProdutoDao produtoDao;
-
+	
 	@GetMapping("/lista")
 	public String listar(ModelMap model) {
+		getDir();
 		List<Imagem> imagem = dao.buscarTodasImagemPeloPrCodigo();
 		
-		model.addAttribute("imagens",imagem);
+		model.addAttribute("images",imagem);
 		return "/public/admin/images/lista";
 	}
 	
 	@GetMapping("/cadastro")
-	public String preCadastrar(Imagem imagem) {		
-		return "/public/admin/alunos/cadastro"; 
+	public String preCadastrar(Imagem imagem) {
+		getDir();
+		return "/public/admin/images/cadastro"; 
 	}
 	
 	@PostMapping("/salvar")
-	public String salvarImagem(@Valid Imagem imagem, BindingResult bs, @RequestParam("imagem") MultipartFile file, RedirectAttributes attr) {	
+	public String salvarImagem(@Valid Imagem imagem,
+			BindingResult bs,
+			@RequestParam("file") MultipartFile file,
+			RedirectAttributes attr) {
+		
 		if(bs.hasErrors()) {
 			return "/public/admin/images/cadastro";
 		}
 		
 		if(salveImg(file)) {
-			imagem.setImHref(DIRBASE+DIRRES+IMGALUNOS+SEP+file.getOriginalFilename());
+			imagem.setImHref(IMGPRODUTOS+SEP+file.getOriginalFilename());
 		}
 		
 		dao.salvar(imagem);
-		attr.addFlashAttribute("message", "Aluno cadastrado com sucesso!");
+		attr.addFlashAttribute("message", "Imagem cadastrada com sucesso!");
 		
 		return "redirect:/images/cadastro";
 	}
 	
 	@GetMapping("/editar/{codigo}")
 	public String preEditar(@PathVariable("codigo") Long codigo, ModelMap model) {
+		getDir();
 		Imagem imagem = dao.buscarPorId(codigo);
 		model.addAttribute("imagem", imagem);
 		
@@ -86,7 +93,7 @@ public class ImagemController {
 	public String salvarEdicao(@Valid Imagem imagem,
 			BindingResult bs,
 			@RequestParam("imHref") String imHref,
-			@RequestParam("imagem") MultipartFile file,
+			@RequestParam("file") MultipartFile file,
 			RedirectAttributes attr) {
 		
 		if(bs.hasErrors()) {
@@ -96,12 +103,12 @@ public class ImagemController {
 		if(!file.isEmpty()) {
 			removeImg(imagem.getImHref());
 			if(salveImg(file)) {
-				imagem.setImHref(DIRBASE+DIRRES+IMGALUNOS+SEP+file.getOriginalFilename());
+				imagem.setImHref(IMGPRODUTOS+SEP+file.getOriginalFilename());
 			}
 		}
 		
 		dao.atualizar(imagem);
-		attr.addFlashAttribute("message","Aluno atualizado com sucesso!");
+		attr.addFlashAttribute("message","Imagem atualizada com sucesso!");
 		
 		return "redirect:/images/lista";
 	}
@@ -125,7 +132,7 @@ public class ImagemController {
 		}		
 		try {
 			byte[] bt = file.getBytes();
-			Path path = Paths.get(DIRBASE+DIRRES+IMGALUNOS+SEP+file.getOriginalFilename());
+			Path path = Paths.get(DIRBASE+DIRRES+IMGPRODUTOS+SEP+file.getOriginalFilename());
 			Files.write(path,bt);
 			return true;
 		} catch (IOException e) {
@@ -136,83 +143,22 @@ public class ImagemController {
 	}
 	
 	private boolean removeImg(String file) {
-		File arqFoto = new File(file);
+		File arqFoto = new File(DIRBASE+DIRRES+file);
 		if (arqFoto != null && arqFoto.exists()) {
 			arqFoto.delete();
 			return true;
 		}
 		return false;
 	}
-}
-
-
-
-//@GetMapping("/ImagemUpload/{imPrCodigo}") 
-//public String imagemUploadPeloPrCodigo(@PathVariable("imPrCodigo") Long imPrCodigo, ModelMap model) { //@PathVariable("id") esta indicando que o valor chamado 'id' vindo da view vai ser atribuido no Long id do parametro
-//	//busca o curso pelo id
-//	Imagem imagem = dao.buscarPorPrCodigo(imPrCodigo);
-//	
-//	//cria o atributo com objeto preenchido do curso, pra passar pra iew
-//	model.addAttribute("imagem", imagem);
-//	
-//	return "/public/admin/images/cadastro";
-//}
-
-//@RequestMapping("/fileUploadView")
-//public String fileUploadView() {
-//	return "/public/admin/images/fileUploadView";
-//}
 	
-//@PostMapping("/salvarJpg")
-//public String submit(@RequestParam("file") MultipartFile file,ModelMap model) {
-//    //model.addAttribute("file", file);
-//	
-//	if(file.isEmpty()) {
-//		
-//	}		
-//	try {
-//		byte[] bt = file.getBytes();
-//		Path path = Paths.get(folder+file.getOriginalFilename());
-//		Files.write(path,bt);
-//	} catch (IOException e) {
-//		// TODO Auto-generated catch block
-//		e.printStackTrace();
-//	}
-//	
-//    return "/public/admin/images/fileUploadView";
-//}
-
-//@PostMapping("/salvar")
-//public String salvarCadastro(Imagem imagem) {
-//	
-//	dao.salvar(imagem);
-//	return "redirect:/images/cadastro"; //usando redirect, o metodo chamará uma nova view, se não usar, ela virá preenchida
-//}
-//
-//@GetMapping("/editar/{imCodigo}")//esse {id} pega o id do objeto clicado na lista pelo botão 'editar'
-//public String preEditar(@PathVariable("imCodigo") Long imCodigo, ModelMap model) { //@PathVariable("id") esta indicando que o valor chamado 'id' vindo da view vai ser atribuido no Long id do parametro
-//	//busca o curso pelo id
-//	Imagem imagem = dao.buscarPorId(imCodigo);
-//	
-//	//cria o atributo com objeto preenchido do curso, pra passar pra iew
-//	model.addAttribute("imagem", imagem);
-//	
-//	return "/public/admin/images/cadastro";
-//}
-//
-//@PostMapping("editar")
-//public String salvarEdicao(Imagem imagem) {
-//	
-//	dao.atualizar(imagem);
-//	
-//	return "redirect:/images/imagemLista";
-//}
-//
-//@GetMapping("/excluir/{imCodigo}")
-//public String excluir(@PathVariable("imCodigo") Long imCodigo) {
-//	
-//	dao.delete(imCodigo);
-//	
-//	return "redirect:/images/imagemLista";
-//}
-//
+	private void getDir() {
+		File diretorio = new File(DIRBASE+DIRRES+IMGPRODUTOS);
+		if (!diretorio.exists()) {
+		   diretorio.mkdirs();
+		}
+//		else {
+//			System.out.println(DIRBASE+DIRRES+IMGPRODUTOS);
+//		   System.out.println("Diretório já existente");
+//		}
+	}
+}

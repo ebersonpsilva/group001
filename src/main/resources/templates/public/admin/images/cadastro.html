@@ -33,7 +33,7 @@
 				<div class="card mt-4">
 					<!-- <img class="card-img-top img-fluid" src="http://placehold.it/900x400" alt=""> -->
 					<div class="card-body">
-						<h3 class="card-title">Cadastro de Produtos</h3>
+						<h3 class="card-title">Cadastro de Imagens</h3>
 						<hr/>
 						
 						<!-- MENSAGEM DE SUCESSO -->
@@ -42,8 +42,8 @@
 							<button type="button" class="close" data-dismiss="alert">&times;</button>
 						</div>	
 								
-						<form th:action="${produto.prCodigo == null} ? @{/produtos/salvar} : @{/produtos/editar}"
-							th:object="${produto}"
+						<form th:action="${imagem.imCodigo == null} ? @{/images/salvar} : @{/images/editar}"
+							th:object="${imagem}"
 							method="post" enctype="multipart/form-data">
 							<!-- MENSAGENS DE VALIDAÇÕES -->
 							<div th:if="${#fields.hasAnyErrors()}" class="alert alert-danger alert-dismissible" role="alert">				
@@ -53,47 +53,45 @@
 								<button type="button" class="close" data-dismiss="alert">&times;</button>
 							</div>
 													
-							<input type="hidden" th:field="*{prCodigo}"/> 
-							<!--<input type="hidden" th:field="${produto.prHref}"/>-->
+							<input type="hidden" th:field="*{imCodigo}"/>
+							<input type="hidden" th:field="${imagem.imHref}"/>
 						<table class="table table-bordered">
 						  <tbody>
-							<tr th:if="${produto.prCodigo != null} ">
+							<tr th:if="${imagem.imCodigo != null} ">
 						      <th>Status: </th>
 						      <td>
-								<select class="form-control" name="prStatus" id="prStatus">
+								<select class="form-control" name="imStatus" id="imStatus">
 									<option value="">---Selecione o Status---</option>
-									<option th:value="0" th:text="Inativo" th:selected="${produto.prCodigo != null && produto.prStatus == 0}"></option>
-									<option value="1" th:text="Ativo" th:selected="${produto.prStatus == 1}"></option>
+									<option th:value="0" th:text="Inativo" th:selected="${imagem.imCodigo != null && imagem.imStatus == 0}"></option>
+									<option value="1" th:text="Ativo" th:selected="${imagem.imStatus == 1}"></option>
 								</select>
 							  </td>
 						    </tr>
 							<tr>
-						      <th>Categoria: </th>
+						      <th>Produto: </th>
 						      <td>
-								<select class="form-control" th:field="*{categoria}" id="prCtCodigo">
-									<option value="">---Selecione uma Categoria---</option>
+								<select class="form-control" th:field="*{produto}" id="imPrCodigo">
+									<option value="">---Selecione um Produto---</option>
 									<option
-										th:each="ct : ${listaCategoria}"
-										th:value="${ct.ctCodigo}"
-										th:text="${ct.ctDescricao}"></option>
+										th:each="pr : ${listaProduto}"
+										th:value="${pr.prCodigo}"
+										th:text="${pr.prNome}"></option>
 								</select>
 							  </td>
 						    </tr>
 						    <tr>
-						      <th>Nome: </th>
-						      <td><input type="text" th:field="*{prNome}" id="prNome" class="form-control"/></td>
+						      <th>Título: </th>
+						      <td><input type="text" th:field="*{imTitle}" id="imTitle" class="form-control"/></td>
 						    </tr>
-						    <tr>
-						      <th>Descrição: </th>
-						      <td><textarea rows="5" th:field="*{prDescricao}" id="prDescricao" class="form-control"></textarea></td>
-						    </tr>
-						    <tr>
-						      <th>Valor: </th>
-						      <td><input type="text" th:field="*{prValor}" id="prValor" class="form-control"/></td>
+							<tr th:if="${imagem.imCodigo != null} ">
+						      <th>Imagem: </th>
+						      <td>
+						      	<img th:src="*{imHref}" title="*{i.imTitle}" width="150" height="150" />
+							  </td>
 						    </tr>
 						    <tr>
 						      <th>Foto: </th>
-						      <td><input type="file" name="foto" accept="image/*" id="foto" class="form-control"/></td>
+						      <td><input type="file" name="file" accept="image/*" id="file" class="form-control"/></td>
 						    </tr>
 						    <tr>
 						    	<td>&nbsp;</td>
@@ -104,7 +102,7 @@
 						  </tbody>
 						</table>
 						</form>
-						<a th:href="@{/produtos/lista}" class="btn btn-default">&larr; Lista de Produtos</a>
+						<a th:href="@{/images/lista}" class="btn btn-default">&larr; Lista de Imagens</a>
 					</div>				
 				</div>
 				<!-- <a href="#" class="btn btn-success">Leave a Review</a> -->
@@ -124,7 +122,7 @@
 	<script th:src="@{/js/jquery.maskMoney.js}"></script>
 	<script type="text/javascript">
 		jQuery(function($){
-			$("#prValor").maskMoney({
+			$("#imValor").maskMoney({
 				prefix:'R$ ',
 				allowNegative: false,
 				thousands:'.',

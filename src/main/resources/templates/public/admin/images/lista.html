@@ -19,7 +19,6 @@
 			<div class="col-lg-3">
 				<h1 class="my-4">Menu Principal</h1>
 				<div class="list-group">
-					<!-- <a href="#" class="list-group-item active">Alunos</a> -->
 					<a th:href="@{/alunos/lista}" class="list-group-item">Alunos</a>
 					<a th:href="@{/categorias/categoriaLista}"	class="list-group-item">Categoria</a>
 					<a th:href="@{/produtos/lista}" class="list-group-item">Produto</a>
@@ -55,13 +54,15 @@
 						  <tbody>
 						    <tr th:each="i:${images}">
 						      <td scope="row" th:text="${i.imCodigo}"></td>
-						      <td><img th:src="@{i.imHref}" title="${i.imTitle}" /></td>
-						      <td th:text="${i.produto.prDescricao}"></td>
-						      <td th:text="${i.imHref}"></td>
+						      <td><img th:src="@{${#strings.replace(i.imHref,'\','/')}}" th:title="${i.imTitle}" width="80" height="80"/></td>
+						      <!--<td><img th:src="@{/images/produtos/img001.png}"/></td>-->
+						      
+						      <td th:text="${i.produto.prNome}"></td>
+						      <td th:text="${#strings.substring(i.imHref,0,20)+' ...'}"></td>
 						      <td th:text="${i.imStatus}"></td>
 						      <td>
-							    <a th:href="@{'/images/editar/'+${p.prCodigo}}" class="btn btn-success">Alterar</a>
-							    <a th:href="@{'/images/excluir/'+${p.prCodigo}}" id="btnExcluir" class="btn btn-danger">Exclu&iacute;r</a>
+							    <a th:href="@{'/images/editar/'+${i.imCodigo}}" class="btn btn-success">Alterar</a>
+							    <a th:href="@{'/images/excluir/'+${i.imCodigo}}" id="btnExcluir" class="btn btn-danger">Exclu&iacute;r</a>
 							  </td>
 						    </tr>
 						  </tbody>

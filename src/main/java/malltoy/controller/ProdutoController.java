@@ -51,7 +51,7 @@ public class ProdutoController{
 		}
 		
 		dao.salvar(produto);
-		
+		attr.addFlashAttribute("message", "Produto cadastrado com sucesso!");
 		return "redirect:/produtos/cadastro";
 	}
 	
@@ -70,7 +70,7 @@ public class ProdutoController{
 		}
 		
 		dao.atualizar(produto);
-		
+		attr.addFlashAttribute("message", "Produto atualizado com sucesso!");
 		return "redirect:/produtos/lista";
 	}
 	

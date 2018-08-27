@@ -40,6 +40,7 @@ public class AlunoController {
 	
 	@GetMapping("/lista")
 	public String listar(ModelMap model) {
+		getDir();
 		List<Aluno> aluno = alunoDao.buscarTodos();
 
 		model.addAttribute("alunos",aluno);
@@ -47,19 +48,23 @@ public class AlunoController {
 	}
 	
 	@GetMapping("/cadastro")
-	public String preCadastrar(Aluno aluno) {		
+	public String preCadastrar(Aluno aluno) {
+		getDir();
 		return "/public/admin/alunos/cadastro"; 
 	}
 	
 	@PostMapping("/salvar")
-	public String salvarCadastro(@Valid Aluno aluno, BindingResult bs, @RequestParam("foto") MultipartFile file, RedirectAttributes attr) {
+	public String salvarCadastro(@Valid Aluno aluno, 
+			BindingResult bs, 
+			@RequestParam("foto") MultipartFile file, 
+			RedirectAttributes attr) {
 		
 		if(bs.hasErrors()) {
 			return "/public/admin/alunos/cadastro";
 		}
 		
 		if(salveImg(file)) {
-			aluno.setUsHref(DIRBASE+DIRRES+IMGALUNOS+SEP+file.getOriginalFilename());
+			aluno.setUsHref(IMGALUNOS+SEP+file.getOriginalFilename());
 		}
 		
 		alunoDao.salvar(aluno);
@@ -70,6 +75,7 @@ public class AlunoController {
 	
 	@GetMapping("/editar/{codigo}")
 	public String preEditar(@PathVariable("codigo") Long codigo, ModelMap model) {
+		getDir();
 		Aluno aluno = alunoDao.buscarPorId(codigo);
 		model.addAttribute("aluno", aluno);
 		
@@ -77,7 +83,11 @@ public class AlunoController {
 	}
 	
 	@PostMapping("editar")
-	public String salvarEdicao(@Valid Aluno aluno, BindingResult bs, @RequestParam("usHref") String usHref, @RequestParam("foto") MultipartFile file, RedirectAttributes attr) {
+	public String salvarEdicao(@Valid Aluno aluno, 
+			BindingResult bs, 
+			@RequestParam("usHref") String usHref, 
+			@RequestParam("foto") MultipartFile file, 
+			RedirectAttributes attr) {
 		
 		if(bs.hasErrors()) {
 			return "/public/admin/alunos/cadastro";
@@ -86,7 +96,7 @@ public class AlunoController {
 		if(!file.isEmpty()) {
 			removeImg(aluno.getUsHref());
 			if(salveImg(file)) {
-				aluno.setUsHref(DIRBASE+DIRRES+IMGALUNOS+SEP+file.getOriginalFilename());
+				aluno.setUsHref(IMGALUNOS+SEP+file.getOriginalFilename());
 			}
 		}
 		
@@ -121,11 +131,22 @@ public class AlunoController {
 	}
 	
 	private boolean removeImg(String file) {
-		File arqFoto = new File(file);
+		File arqFoto = new File(DIRBASE+DIRRES+file);
 		if (arqFoto != null && arqFoto.exists()) {
 			arqFoto.delete();
 			return true;
 		}
 		return false;
+	}
+	
+	private void getDir() {
+		File diretorio = new File(DIRBASE+DIRRES+IMGALUNOS);
+		if (!diretorio.exists()) {
+		   diretorio.mkdirs();
+		}
+//		else {
+//			System.out.println(DIRBASE+DIRRES+IMGPRODUTOS);
+//		   System.out.println("Diretório já existente");
+//		}
 	}
 }
