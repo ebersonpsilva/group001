@@ -2,41 +2,56 @@ package malltoy.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import malltoy.model.dao.CategoriaDao;
 import malltoy.model.dao.ProdutoDao;
+import malltoy.model.entity.Categoria;
 import malltoy.model.entity.Produto;
 
 @Controller
 @RequestMapping("/produtos")
-public class ProdutoController {
+public class ProdutoController{
 
 	@Autowired
 	private ProdutoDao dao;
+	
+	@Autowired
+	private CategoriaDao categoriaDao;
 	
 	@GetMapping("/lista")
 	public String listar(ModelMap model) {
 		List<Produto> produto = dao.buscarTodos();
 		model.addAttribute("produtos",produto);
 		
-		return "/produtos/lista";
+		return "/public/admin/produtos/lista";
 	}
 	
 	@GetMapping("/cadastro")
 	public String preCadastrar(Produto produto) {
-		return "produtos/cadastro";
+		return "/public/admin/produtos/cadastro";
 	}
 	
 	@PostMapping("/salvar")
-	public String salvarCadastro(Produto produto) {
+	public String salvarCadastro(@Valid Produto produto, BindingResult bs, RedirectAttributes attr) {
+		
+		if(bs.hasErrors()) {	 
+			return "/public/admin/produtos/cadastro";	 
+		}
 		
 		dao.salvar(produto);
+		
 		return "redirect:/produtos/cadastro";
 	}
 	
@@ -45,11 +60,15 @@ public class ProdutoController {
 		Produto produto = dao.buscarPorId(prCodigo);
 		model.addAttribute("produto", produto);
 		
-		return "/produtos/cadastro";
+		return "/public/admin/produtos/cadastro";
 	}
 	
 	@PostMapping("editar")
-	public String salvarEdicao(Produto produto) {
+	public String salvarEdicao(@Valid Produto produto, BindingResult bs, RedirectAttributes attr) {
+		if(bs.hasErrors()) {	 
+			return "/public/admin/produtos/cadastro";	 
+		}
+		
 		dao.atualizar(produto);
 		
 		return "redirect:/produtos/lista";
@@ -62,4 +81,8 @@ public class ProdutoController {
 		return "redirect:/produtos/produtoLista";
 	}
 	
+	@ModelAttribute("listaCategoria")
+	public List<Categoria> getListaCategorias(){
+		return categoriaDao.buscarTodos();
+	}
 }

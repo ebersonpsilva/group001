@@ -76,7 +76,4 @@ public class Categoria {
 		this.ctStatus = ctStatus;
 	}
 
-	
-	 
-	
 }

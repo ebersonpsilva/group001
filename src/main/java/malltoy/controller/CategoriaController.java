@@ -42,8 +42,9 @@ public class CategoriaController {
 	@PostMapping("/salvar")
 	public String salvarCadastro(@Valid Categoria categoria, BindingResult brs, RedirectAttributes attr) {
 		
-		if(brs.hasErrors())		 
-		 return "/categorias/categoriaCad";	 
+		if(brs.hasErrors()) {	 
+			return "public/admin/categorias/categoriaCad";	 
+		}
 		
 		dao.salvar(categoria);	
 		
@@ -63,7 +64,10 @@ public class CategoriaController {
 	}
 	
 	@PostMapping("editar")
-	public String salvarEdicao(Categoria categoria) {
+	public String salvarEdicao(@Valid Categoria categoria, BindingResult brs, RedirectAttributes attr) {
+		if(brs.hasErrors()) {	 
+			return "public/admin/categorias/categoriaCad";	 
+		}
 		
 		dao.atualizar(categoria);
 		

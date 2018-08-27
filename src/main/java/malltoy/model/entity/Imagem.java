@@ -1,6 +1,6 @@
 package malltoy.model.entity;
 
-import java.security.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +10,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="Imagem")
@@ -19,24 +23,25 @@ public class Imagem {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long imCodigo;
 	
+	@Column(nullable=true)
 	private String imTitle;
-	
+
+	@NotBlank(message="Você deve selecionar uma imagem para UPLOAD!")
+	@Column(nullable=false)
 	private String imHref;
 	
-	@Column(nullable=false)
-	private boolean imStatus;
+	@Column(length=1, columnDefinition="int default 1", insertable=false)
+	private int imStatus;
 	
-	private Timestamp imDtCadastro;
+	@Column(columnDefinition="timestamp default CURRENT_TIMESTAMP()",insertable=false,updatable=false) 	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date imDtCadastro;
 	
-	//atributo usado como foreign key
+	@NotNull(message="Selecione um produto!")
 	@ManyToOne
 	@JoinColumn(name="imPrCodigo")
-	private Produto produto;	
-	
-	//atributo usado temporariamente, quando estiver pronto, use a variavel comentada acima
-	//private long produto;
-	
-	//getter e setters
+	private Produto produto;
+
 	public Long getImCodigo() {
 		return imCodigo;
 	}
@@ -61,19 +66,19 @@ public class Imagem {
 		this.imHref = imHref;
 	}
 
-	public boolean isImStatus() {
+	public int getImStatus() {
 		return imStatus;
 	}
 
-	public void setImStatus(boolean imStatus) {
+	public void setImStatus(int imStatus) {
 		this.imStatus = imStatus;
 	}
 
-	public Timestamp getImDtCadastro() {
+	public Date getImDtCadastro() {
 		return imDtCadastro;
 	}
 
-	public void setImDtCadastro(Timestamp imDtCadastro) {
+	public void setImDtCadastro(Date imDtCadastro) {
 		this.imDtCadastro = imDtCadastro;
 	}
 
@@ -83,6 +88,6 @@ public class Imagem {
 
 	public void setProduto(Produto produto) {
 		this.produto = produto;
-	}	
-	
+	}
+
 }

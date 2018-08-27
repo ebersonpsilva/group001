@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>:::MALL TOY | P&aacute;gina Administrativa:::</title>
+<link th:href="@{/webjars/bootstrap/css/bootstrap.css}" rel="stylesheet" />
+<link th:href="@{/webjars/bootstrap/css/bootstrap-theme.css}" rel="stylesheet" />
+</head>
+<body>
+	<header class="bg-primary text-white">
+		<div class="container text-center">
+			<h1>Menu administrativo</h1>
+		</div>
+	</header>
+	<div class="container">
+
+		<div class="row">
+
+			<div class="col-lg-3">
+				<h1 class="my-4">Menu Principal</h1>
+				<div class="list-group">
+					<!-- <a href="#" class="list-group-item active">Alunos</a> -->
+					<a th:href="@{/alunos/lista}" class="list-group-item">Alunos</a>
+					<a th:href="@{/categorias/categoriaLista}"	class="list-group-item">Categoria</a>
+					<a th:href="@{/produtos/lista}" class="list-group-item">Produto</a>
+					<a th:href="@{/images/lista}" class="list-group-item">Imagens</a>
+				</div>
+			</div>
+			<!-- /.col-lg-3 -->
+
+			<div class="col-lg-9">
+				<div class="card mt-4">
+					<!-- <img class="card-img-top img-fluid" src="http://placehold.it/900x400" alt=""> -->
+					<div class="card-body">
+						<h3 class="card-title">Lista de Produtos</h3>
+						<a th:href="@{/produtos/cadastro}" class="btn btn-primary">Novo Produto</a>
+						</hr>
+						<!-- MENSAGEM DE SUCESSO -->
+						<div th:if="${message != null}" class="alert alert-success alert-dismissible" role="alert">				
+							<span th:text="${message}"></span>
+							<button type="button" class="close" data-dismiss="alert">&times;</button>
+						</div>
+						
+						<table class="table table-bordered">
+						  <thead>
+						    <tr>
+						      <th scope="col">#</th>
+						      <th scope="col">Nome</th>
+						      <th scope="col">Categoria</th>
+						      <th scope="col">Status</th>
+						      <th scope="col">&nbsp;</th>
+						    </tr>
+						  </thead>
+						  <tbody>
+						    <tr th:each="p:${produtos}">
+						      <td scope="row" th:text="${p.prCodigo}"></td>
+						      <td th:text="${p.prNome}"></td>
+						      <td th:text="${p.categoria.ctDescricao}"></td>
+						      <td th:text="${p.prStatus}"></td>
+						      <td>
+							    <a th:href="@{'/produtos/editar/'+${p.prCodigo}}" class="btn btn-success">Alterar</a>
+							    <a th:href="@{'/produtos/excluir/'+${p.prCodigo}}" id="btnExcluir" class="btn btn-danger">Exclu&iacute;r</a>
+							  </td>
+						    </tr>
+						  </tbody>
+						</table>
+					</div>				
+				</div>
+				<!-- <a href="#" class="btn btn-success">Leave a Review</a> -->
+			</div>
+		</div>
+		<!-- /.card -->
+
+	</div>
+	<!-- /.col-lg-9 -->
+
+	</div>
+
+	</div>
+
+	<script th:src="@{/webjars/jquery/jquery.js}"></script>
+	<script th:src="@{/webjars/bootstrap/js/bootstrap.js}"></script>
+	<script th:src="@{/js/util.js}"></script>	
+</body>
+</html>

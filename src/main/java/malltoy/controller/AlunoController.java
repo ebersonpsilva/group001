@@ -52,7 +52,7 @@ public class AlunoController {
 	}
 	
 	@PostMapping("/salvar")
-	public String salvarCadastro(@Valid Aluno aluno, BindingResult bs, @RequestParam("foto") MultipartFile file,RedirectAttributes attr) {
+	public String salvarCadastro(@Valid Aluno aluno, BindingResult bs, @RequestParam("foto") MultipartFile file, RedirectAttributes attr) {
 		
 		if(bs.hasErrors()) {
 			return "/public/admin/alunos/cadastro";
