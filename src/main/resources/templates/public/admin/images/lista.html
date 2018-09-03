@@ -54,9 +54,10 @@
 						  <tbody>
 						    <tr th:each="i:${images}">
 						      <td scope="row" th:text="${i.imCodigo}"></td>
-						      <td><img th:src="@{${#strings.replace(i.imHref,'\','/')}}" th:title="${i.imTitle}" width="80" height="80"/></td>
-						      <!--<td><img th:src="@{/images/produtos/img001.png}"/></td>-->
-						      
+						      <td>
+						      	<!--<img th:src="@{${#strings.replace(i.imHref,'\','/')}}" th:alt-title="${i.imTitle}" width="80" height="80"/>-->
+						      	<img th:src="${i.imHref}" title="${i.imTitle}" width="80" height="80" />
+						      </td>						      
 						      <td th:text="${i.produto.prNome}"></td>
 						      <td th:text="${#strings.substring(i.imHref,0,20)+' ...'}"></td>
 						      <td th:text="${i.imStatus}"></td>

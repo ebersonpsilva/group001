@@ -3,8 +3,10 @@ package malltoy.model.entity;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,9 +33,9 @@ public class Categoria {
 	@Column(length=1, columnDefinition="int default 1", insertable=false)
 	private int ctStatus;
 	
-	@OneToMany(mappedBy="categoria") //mapeada para uma variavel chamada 'categoria' que esta na classe Produto
+	@OneToMany(mappedBy="categoria",fetch = FetchType.EAGER,cascade = CascadeType.ALL) //mapeada para uma variavel chamada 'categoria' que esta na classe Produto
 	private List<Produto> produtos;
-
+//	fetch = FetchType.EAGER, mappedBy = "fatura", cascade = CascadeType.ALL
 	//getters e setters
 	public Long getCtCodigo() {
 		return ctCodigo;

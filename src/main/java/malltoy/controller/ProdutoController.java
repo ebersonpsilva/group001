@@ -78,7 +78,7 @@ public class ProdutoController{
 	public String excluir(@PathVariable("prCodigo") Long prCodigo) {
 		
 		dao.delete(prCodigo);
-		return "redirect:/produtos/produtoLista";
+		return "redirect:/produtos/lista";
 	}
 	
 	@ModelAttribute("listaCategoria")

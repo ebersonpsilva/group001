@@ -25,7 +25,6 @@ public class Imagem {
 	@Column(nullable=true)
 	private String imTitle;
 
-//	@NotNull(message="Você deve selecionar uma imagem para UPLOAD!")
 	@Column(nullable=false)
 	private String imHref;
 	
@@ -37,8 +36,8 @@ public class Imagem {
 	private Date imDtCadastro;
 	
 	@NotNull(message="Selecione um produto!")
-	@ManyToOne
-	@JoinColumn(name="imPrCodigo")
+	@ManyToOne//(cascade = CascadeType.ALL)
+	@JoinColumn(name="imPrCodigo",nullable=false)
 	private Produto produto;
 
 	public Long getImCodigo() {

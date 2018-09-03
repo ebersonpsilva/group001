@@ -38,7 +38,8 @@ public class ImagemController {
 	private static final String DIRBASE				= System.getProperty("user.dir");
 	private static final String DIRRES				= SEP+"src"+SEP+"main"+SEP+"resources"+SEP+"static"; 
 	private static final String IMGPRODUTOS			= SEP+"images"+SEP+"produtos";
-
+	private String name = "";
+	
 	@Autowired
 	private ImagemDao dao;
 	
@@ -71,7 +72,7 @@ public class ImagemController {
 		}
 		
 		if(salveImg(file)) {
-			imagem.setImHref(IMGPRODUTOS+SEP+file.getOriginalFilename());
+			imagem.setImHref(IMGPRODUTOS+SEP+name);
 		}
 		
 		dao.salvar(imagem);
@@ -103,7 +104,7 @@ public class ImagemController {
 		if(!file.isEmpty()) {
 			removeImg(imagem.getImHref());
 			if(salveImg(file)) {
-				imagem.setImHref(IMGPRODUTOS+SEP+file.getOriginalFilename());
+				imagem.setImHref(IMGPRODUTOS+SEP+name);
 			}
 		}
 		
@@ -127,12 +128,22 @@ public class ImagemController {
 	}
 
 	private boolean salveImg(MultipartFile file) {
+		
 		if(file.isEmpty()) {
 			return false;
 		}		
 		try {
 			byte[] bt = file.getBytes();
-			Path path = Paths.get(DIRBASE+DIRRES+IMGPRODUTOS+SEP+file.getOriginalFilename());
+			if(file.getOriginalFilename().contains("\\")) {
+				String[] nFile = file.getOriginalFilename().split("\\\\");
+				for(int i = 0;i < nFile.length;i++) {
+					name = nFile[i];
+				}
+			}else {
+				name = file.getOriginalFilename();
+			}
+			
+			Path path = Paths.get(DIRBASE+DIRRES+IMGPRODUTOS+SEP+name);
 			Files.write(path,bt);
 			return true;
 		} catch (IOException e) {

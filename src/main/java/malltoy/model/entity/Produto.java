@@ -3,6 +3,7 @@ package malltoy.model.entity;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,7 +21,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name="Produto")
 public class Produto {
-	
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long prCodigo;
@@ -42,12 +43,12 @@ public class Produto {
 	@Column(length=1, columnDefinition="int default 1", insertable=false)
 	private int prStatus;
 	
-	@OneToMany(mappedBy="produto") //mapeada para uma variavel chamada 'imagem' que esta na classe Imagem
+	@OneToMany(mappedBy="produto")
 	private List<Imagem> images;
 
 	@NotNull(message="Selecione uma categoria!")
-	@ManyToOne
-	@JoinColumn(name="prCtCodigo")//é a chave estrangeira na tabela aluno
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="prCtCodigo",nullable=false)
 	private Categoria categoria;
 	
 	//getters e setters
